@@ -1,10 +1,10 @@
-.search-ride { 
+.search-ride {
   display: flex;
-  width: 100%;
-  background-image: url("../assets/img/motorista.png");
+  background-image: url("../assets/img/motoristaBorrado.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  width: 100%;
 }
 
 .search-ride-container {
