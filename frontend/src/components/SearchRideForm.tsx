@@ -8,11 +8,6 @@ const SearchRideForm = () => {
     e.preventDefault();
   };
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAMqYayPsqD8jqBw_dL-aclx-_y2UCbClA",
-    libraries: ["places"],
-    language: "pt",
-  });
 
   return (
     <form onSubmit={handleSubmit}>
