@@ -1,0 +1,29 @@
+.search-ride { 
+  display: flex;
+  width: 100%;
+  background-image: url("../assets/img/motorista.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.search-ride-container {
+  margin: 50px;
+  border: 2px solid #ff9900;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.search-ride-form {
+  padding: 30px 20px 30px 30px;
+  background-color: #151515;
+  border-radius: 48px 0px 0px 50px;
+  width: 40%;
+}
+
+.search-ride-form h2 {
+  color: #ff9900;
+  text-align: center;
+}
