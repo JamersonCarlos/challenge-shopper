@@ -1,18 +1,12 @@
 import React from "react";
 import "./SearchRideForm.css";
 import { FaIdCard, FaMapMarkerAlt, FaLocationArrow } from "react-icons/fa";
-import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+import { Autocomplete } from "@react-google-maps/api";
 
 const SearchRideForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAMqYayPsqD8jqBw_dL-aclx-_y2UCbClA",
-    libraries: ["places"],
-    language: "pt",
-  });
 
   return (
     <form onSubmit={handleSubmit}>

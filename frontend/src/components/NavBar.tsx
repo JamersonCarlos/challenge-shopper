@@ -1,14 +1,16 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaCar, FaHistory, FaUser } from "react-icons/fa";
+
 import "./NavBar.css";
 
 const NavBar = () => {
+  const navigate = useNavigate();
   return (
     <div className="vertical-menu">
-      <h1>ClickMove</h1>
+      <h1 onClick={() => navigate('/')}>ClickMove</h1>
       <nav className="menu">
-        <NavLink to={"/"}>
+        <NavLink to={"/solicitar-corrida"}>
           <FaCar />
           Solicite sua viagem
         </NavLink>
