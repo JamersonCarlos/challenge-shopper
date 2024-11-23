@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-//Import components 
+//Import components
 import NavBar from "./components/NavBar";
 
 //Import Pages
@@ -12,12 +12,14 @@ import NovaCorrida from "./pages/NovaCorrida";
 function App() {
   return (
     <div className="App">
-      
       <BrowserRouter>
         <NavBar></NavBar>
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
-          <Route path="/solicitar-corrida" element={<NovaCorrida></NovaCorrida>}></Route>
+          <Route
+            path="/solicitar-corrida"
+            element={<NovaCorrida></NovaCorrida>}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>
