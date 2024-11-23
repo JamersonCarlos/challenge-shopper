@@ -1,3 +1,10 @@
+.search-ride-form {
+  padding: 30px 20px 30px 30px;
+  background-color: #151515;
+  border-radius: 48px 0px 0px 50px;
+  width: 40%;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -38,6 +45,11 @@ form input[type="submit"] {
   cursor: pointer;
 }
 
+form input[type="submit"]:disabled {
+  background-color: #ff99005b;
+  cursor: not-allowed;
+}
+
 form input:focus {
   outline: none;
 }
@@ -69,4 +81,9 @@ form input::placeholder {
 h2 {
   color: #ff9900;
   text-align: center;
+}
+
+.error-text {
+  color: red;
+  font-size: 10px;
 }
