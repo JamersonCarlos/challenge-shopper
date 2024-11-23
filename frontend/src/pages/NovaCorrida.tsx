@@ -24,7 +24,6 @@ const NovaCorrida = () => {
     <div className="search-ride">
       <div className="search-ride-container">
         <div className="search-ride-form">
-          <h2>Buscar Motorista</h2>
           <SearchRideForm></SearchRideForm>
         </div>
         <GoogleMap

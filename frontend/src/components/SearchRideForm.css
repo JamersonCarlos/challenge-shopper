@@ -65,3 +65,8 @@ form input::placeholder {
   color: #b0b0b0;
   pointer-events: none;
 }
+
+h2 {
+  color: #ff9900;
+  text-align: center;
+}

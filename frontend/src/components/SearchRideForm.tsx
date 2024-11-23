@@ -9,46 +9,53 @@ const SearchRideForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        <span>CPF</span>
-        <div className="input-container">
-          <input
-            type="text"
-            name="cpf"
-            placeholder="Ex: 12031405123"
-            maxLength={11}
-          />
-          <FaIdCard className="icon-right" /> {/* Ícone React Icons */}
-        </div>
-      </label>
-
-      <label>
-        <span>Origem</span>
-        <div className="input-container">
-          <Autocomplete>
-            <input type="text" name="origem" placeholder="Endereço de origem" />
-          </Autocomplete>
-          <FaMapMarkerAlt className="icon-right" /> {/* Ícone React Icons */}
-        </div>
-      </label>
-
-      <label>
-        <span>Destino</span>
-        <div className="input-container">
-          <Autocomplete>
+    <>
+      <h2>Buscar Motorista</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          <span>CPF</span>
+          <div className="input-container">
             <input
               type="text"
-              name="destino"
-              placeholder="Endereço do destino"
+              name="cpf"
+              placeholder="Ex: 12031405123"
+              maxLength={11}
             />
-          </Autocomplete>
-          <FaLocationArrow className="icon-right" /> {/* Ícone React Icons */}
-        </div>
-      </label>
+            <FaIdCard className="icon-right" /> {/* Ícone React Icons */}
+          </div>
+        </label>
 
-      <input type="submit" value="Buscar" />
-    </form>
+        <label>
+          <span>Origem</span>
+          <div className="input-container">
+            <Autocomplete>
+              <input
+                type="text"
+                name="origem"
+                placeholder="Endereço de origem"
+              />
+            </Autocomplete>
+            <FaMapMarkerAlt className="icon-right" /> {/* Ícone React Icons */}
+          </div>
+        </label>
+
+        <label>
+          <span>Destino</span>
+          <div className="input-container">
+            <Autocomplete>
+              <input
+                type="text"
+                name="destino"
+                placeholder="Endereço do destino"
+              />
+            </Autocomplete>
+            <FaLocationArrow className="icon-right" /> {/* Ícone React Icons */}
+          </div>
+        </label>
+
+        <input type="submit" value="Buscar" />
+      </form>
+    </>
   );
 };
 
