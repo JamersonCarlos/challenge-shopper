@@ -221,6 +221,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                           data: result,
                           origin: origin,
                           destination: destination,
+                          id: cpfValue
                         } as NavigationState,
                       });
                     }}
