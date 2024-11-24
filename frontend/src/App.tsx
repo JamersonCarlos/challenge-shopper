@@ -8,7 +8,7 @@ import NavBar from "./components/NavBar";
 //Import Pages
 import Home from "./pages/Home";
 import NovaCorrida from "./pages/NovaCorrida";
-import Viagem from "./pages/Viagem";
+import Drivers from "./pages/Drivers";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
             path="/solicitar-corrida"
             element={<NovaCorrida></NovaCorrida>}
           ></Route>
-          <Route path="/drivers" element={<Viagem></Viagem>}></Route>
+          <Route path="/drivers" element={<Drivers></Drivers>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
