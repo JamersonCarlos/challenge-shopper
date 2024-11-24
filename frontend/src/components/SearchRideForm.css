@@ -1,8 +1,16 @@
 .search-ride-form {
-  padding: 30px 20px 30px 30px;
+  padding: 20px;
   background-color: #151515;
   border-radius: 48px 0px 0px 50px;
-  width: 40%;
+  width: 50%;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  width: 100%;
 }
 
 form {
@@ -86,4 +94,35 @@ h2 {
 .error-text {
   color: red;
   font-size: 10px;
+}
+
+.preview-results-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttons-container {
+  justify-content: space-between;
+}
+
+.btn-back,
+.btn-confirm {
+  padding: 7px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.results {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.results p { 
+  color: aliceblue;
+  font-size: 14px;
+  padding-bottom: 10px;
 }
