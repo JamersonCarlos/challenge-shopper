@@ -184,4 +184,14 @@ router.post("/estimate", async (req: Request, res: Response) => {
       });
     }
 
+    //Validando quilometragem
+    const driverResult: DriverAttributes = drivers[0];
+    if (data.distance < driverResult.minKm) {
+      return res.status(400).json({
+        error_code: "INVALID_DISTANCE",
+        error_description:
+          "Distância menor que a quilometragem minima do condutor",
+      });
+    }
+
 module.exports = router;
