@@ -120,7 +120,8 @@ const Viagem = () => {
       {showConfirmation && (
         <div className="confirmation-card">
           <h2>
-            Viagem Confirmada! <FiAlertOctagon className="icon-alert"></FiAlertOctagon>
+            Viagem Confirmada!{" "}
+            <FiAlertOctagon className="icon-alert"></FiAlertOctagon>
           </h2>
           <p>
             A viagem foi confirmada com sucesso. Em breve, você será
@@ -230,7 +231,11 @@ const Viagem = () => {
           >
             Voltar
           </button>
-          <button className="btn-confirm" onClick={handleConfirm}>
+          <button
+            className="btn-confirm"
+            onClick={handleConfirm}
+            disabled={showConfirmation ? true : false}
+          >
             Confirmar
           </button>
         </div>
