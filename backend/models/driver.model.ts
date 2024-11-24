@@ -6,11 +6,14 @@ export interface DriverAttributes {
   id: number;
   name: string;
   description: string;
-  car: string;
+  vehicle: string;
   ratePerKm: number;
   minKm: number;
+  photoProfile?: string | null; 
+  photoCar?: string | null;
   value?: number;
   review?: review; 
+  registeredSince?: number | null; 
 }
 
 interface review { 
@@ -29,9 +32,12 @@ class Driver
   public id!: number;
   public name!: string;
   public description!: string;
-  public car!: string;
+  public vehicle!: string;
   public ratePerKm!: number;
   public minKm!: number;
+  public photoProfile?: string | null; 
+  public photoCar?: string | null;
+  public registeredSince?: number | null;
 
   static associate() {
     this.hasMany(Assessment, {
@@ -56,7 +62,7 @@ Driver.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    car: {
+    vehicle: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -68,6 +74,18 @@ Driver.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    photoProfile: { 
+      type: DataTypes.STRING, 
+      allowNull: true, 
+    }, 
+    photoCar: { 
+      type: DataTypes.STRING, 
+      allowNull: true, 
+    }, 
+    registeredSince: { 
+      type: DataTypes.INTEGER, 
+      allowNull: true, 
+    }
   },
   {
     sequelize,
