@@ -169,4 +169,19 @@ router.post("/estimate", async (req: Request, res: Response) => {
       });
     }
     const data: RequestBodyConfirm = req.body;
+
+    //Validando se o motorista existe
+    const drivers: Driver[] = await Driver.findAll({
+      where: {
+        id: data.driver.id,
+      },
+    });
+
+    if (!drivers) {
+      return res.status(400).json({
+        error_code: "DRIVER_NOT_FOUND",
+        error_description: "Motorista não encontrado!",
+      });
+    }
+
 module.exports = router;
