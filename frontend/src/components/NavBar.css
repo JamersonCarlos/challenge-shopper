@@ -1,6 +1,7 @@
 .vertical-menu {
   padding: 40px 0px 56px 32px;
   background-color: white;
+  border-right: 1px solid #ff9900;
 }
 
 h1 {

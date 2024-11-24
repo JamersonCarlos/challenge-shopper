@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaIdCard, FaMapMarkerAlt, FaLocationArrow } from "react-icons/fa";
 import { Autocomplete } from "@react-google-maps/api";
 
+
 //Função de verificação
 import { isErrorInvalidAddress } from "../interfaces/resultRide.interface";
 
