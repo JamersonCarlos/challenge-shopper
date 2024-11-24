@@ -50,6 +50,22 @@ interface ResponseBody {
   options: Array<DriverAttributes>;
 }
 
+function isRequestBodyConfirm(data: any): data is RequestBodyConfirm {
+  return (
+    typeof data === "object" &&
+    typeof data.origin === "string" &&
+    typeof data.destination === "string" &&
+    typeof data.customer_id === "string" &&
+    typeof data.value === "number" &&
+    typeof data.distance === "number" &&
+    typeof data.duration === "string" && 
+    typeof data.driver === "object" && 
+    typeof data.driver.id === "number" && 
+    typeof data.driver.name === "string" 
+  );
+}
+
+("POST /ride/estimate");
 router.post("/estimate", async (req: Request, res: Response) => {
   try {
     const { id, origin, destination }: RequestBody = req.body;
