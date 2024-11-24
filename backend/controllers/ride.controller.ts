@@ -194,4 +194,23 @@ router.post("/estimate", async (req: Request, res: Response) => {
       });
     }
 
+    const trip = await Trip.create({
+      origin: data.origin,
+      destination: data.destination,
+      customer_id: data.customer_id,
+      value: data.value,
+      distance: data.distance,
+      id_driver: data.driver.id,
+      driver_name: data.driver.name,
+      duration: data.duration,
+    });
+
+    res.status(200).json({
+      success: true,
+    });
+  } catch (e) {
+    res.status(500).json({});
+  }
+});
+
 module.exports = router;
