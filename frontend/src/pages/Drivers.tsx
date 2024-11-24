@@ -9,12 +9,17 @@ import {
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
+import { FiAlertOctagon } from "react-icons/fi";
+
+//Services
+import { confirmTrip } from "../services/tripService";
 
 //Interfaces
 import { NavigationState } from "../interfaces/routesData.interface";
 
 //Função para capturar a rota de um ponto a outro
 import { getRoute } from "../utils/getRoute";
+import { Trip } from "../interfaces/trip.interface";
 
 const Viagem = () => {
   const { isLoaded } = useJsApiLoader({
@@ -22,6 +27,9 @@ const Viagem = () => {
     libraries: ["places"],
     language: "pt",
   });
+
+  //ConfirmOperation
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   //Roteamento
   const navigate = useNavigate();
@@ -58,6 +66,29 @@ const Viagem = () => {
     }
   };
 
+  //Confirmar viagem
+  const handleConfirm = async () => {
+    const newTrip: Trip = {
+      customer_id: dataRouter.id,
+      destination: dataRouter.destination,
+      origin: dataRouter.origin,
+      distance: dataRouter.data.distance,
+      duration: dataRouter.data.duration,
+      driver: {
+        id: driverUse.id,
+        name: driverUse.name,
+      },
+      value: driverUse.value,
+    };
+
+    const response = await confirmTrip(newTrip);
+    console.log(response);
+    if (response.success) {
+      setShowConfirmation(true);
+      setTimeout(() => navigate("/viagens"), 3000);
+    }
+  };
+
   useEffect(() => {
     if (isLoaded) {
       setCenter({
@@ -85,6 +116,18 @@ const Viagem = () => {
 
   return (
     <div className="container-main">
+      {/* Card confirmação de operação */}
+      {showConfirmation && (
+        <div className="confirmation-card">
+          <h2>
+            Viagem Confirmada! <FiAlertOctagon className="icon-alert"></FiAlertOctagon>
+          </h2>
+          <p>
+            A viagem foi confirmada com sucesso. Em breve, você será
+            redirecionado para a página de viagens.
+          </p>
+        </div>
+      )}
       <div className="cabecalho">
         <h1>Motoristas Disponiveis</h1>
       </div>
@@ -127,7 +170,7 @@ const Viagem = () => {
                 <p>{dataRouter.destination}</p>
               </div>
               <div className="details-container">
-                <p>Distância Total: {dataRouter.data.distance}</p>
+                <p>Distância Total: {dataRouter.data.distance} km</p>
                 <p>Duração: {dataRouter.data.duration}</p>
                 <p>Valor: R${driverUse.value}</p>
               </div>
@@ -187,7 +230,9 @@ const Viagem = () => {
           >
             Voltar
           </button>
-          <button className="btn-confirm">Confirmar</button>
+          <button className="btn-confirm" onClick={handleConfirm}>
+            Confirmar
+          </button>
         </div>
       </div>
     </div>
