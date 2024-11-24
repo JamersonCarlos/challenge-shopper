@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Viagem.css";
 
-import { useJsApiLoader, GoogleMap } from "@react-google-maps/api";
+import {
+  useJsApiLoader,
+  GoogleMap,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
+
+//Interfaces
+import { NavigationState } from "../interfaces/routesData.interface";
+
+//Função para capturar a rota de um ponto a outro
+import { getRoute } from "../utils/getRoute";
 
 const Viagem = () => {
   const { isLoaded } = useJsApiLoader({
@@ -13,67 +23,113 @@ const Viagem = () => {
     language: "pt",
   });
 
+  //Roteamento
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [directionsResponse, setDirectionsResponse] = useState<
+    google.maps.DirectionsResult | undefined
+  >();
+
   const [mapa, setMapa] = useState<google.maps.Map>();
   const [center, setCenter] = useState({
     lat: -23.541596480067913,
     lng: -46.629363693411726,
   });
 
-  const navigate = useNavigate();
-  const mapper = [1];
+  //Carregamento de dados recebidos via router
+  const dataRouter: NavigationState = location.state;
+  const drivers = dataRouter.data.options;
+
+  //Navegação variáveis e funções
+  const [indexDriver, setIndexDriver] = useState(0);
+  const [driverUse, setDriverUse] = useState(drivers[0]);
+  const [maxPage, setMaxPage] = useState(drivers.length - 1);
+
+  const nextPage = () => {
+    setDriverUse(drivers[indexDriver + 1]);
+    setIndexDriver(indexDriver + 1);
+  };
+
+  const backPage = () => {
+    if (indexDriver > 0) {
+      setDriverUse(drivers[indexDriver - 1]);
+      setIndexDriver(indexDriver - 1);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoaded) {
+      setCenter({
+        lat: dataRouter?.data.origin.latitude,
+        lng: dataRouter?.data.origin.longitude,
+      });
+      // Solicitar a rota entre a origem e o destino
+      const origin = {
+        lat: dataRouter?.data.origin.latitude,
+        lng: dataRouter?.data.origin.longitude,
+      };
+      const destination = {
+        lat: dataRouter?.data.destination.latitude,
+        lng: dataRouter?.data.destination.longitude,
+      };
+      getRoute(origin, destination)
+        .then((route) => {
+          setDirectionsResponse(route);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [dataRouter, isLoaded]);
 
   return (
     <div className="container-main">
       <div className="cabecalho">
         <h1>Motoristas Disponiveis</h1>
       </div>
-
       <div className="informations">
+        <FaChevronLeft
+          className={indexDriver !== 0 ? "btn-scroll" : "btn-scroll disable"}
+          onClick={backPage}
+        ></FaChevronLeft>
         <div className="viagem-container">
           <div className="driver-container">
-            <img
-              src="https://i.pinimg.com/736x/20/af/45/20af454bc02b9ef32aa40cbd6fa43780.jpg"
-              alt="Homer Simpson"
-            />
+            <img src={driverUse.photoProfile} alt={driverUse.name} />
             <div>
-              <h2>Informações</h2>
-              <p>Nome: Homer Simpson</p>
-              <p>Corridas: 250+</p>
-              <p>Rating: 4.5</p>
-              <p>Registrado desde de 2024</p>
-              <button className="btn-visit-profile">Visitar Perfil</button>
+              <p>{driverUse.description}</p>
+              <p>Registrado desde de {driverUse.registeredSince}</p>
             </div>
           </div>
-          <div className="vehicle-container">
-            <img
-              src="https://static.vecteezy.com/ti/fotos-gratis/p1/11445598-velho-carro-de-passageiros-rosa-enferrujado-foto.jpg"
-              alt="Homer Simpson"
-            />
-            <div>
-              <h2>Detalhes </h2>
-              <p>Nome: Homer Simpson</p>
-              <p>Corridas: 250+</p>
-              <p>Rating: 4.5</p>
-              <p>Registrado desde de 2024</p>
-              <button className="btn-visit-profile">Visitar Perfil</button>
+          <div className="vehicle-reviews-container">
+            <div className="vehicle-container">
+              <img src={driverUse.photoCar} alt="Carro" />
+              <div>
+                <p>Modelo: {driverUse.vehicle}</p>
+              </div>
+            </div>
+            <div className="review-container">
+              <p className="title-reviews">
+                Avaliações: {driverUse.review.rating}/5{" "}
+                <FaRegStar className="star-icon"></FaRegStar>
+              </p>
+              <p>{driverUse.review.comment}</p>
             </div>
           </div>
           <div className="informations-container">
             <div className="informations-column">
               <div>
                 <h3>Origem</h3>
-                <p>Pettah, Bus Stop</p>
-                <p>Total Distance: 25km</p>
+                <p>{dataRouter.origin}</p>
               </div>
               <div>
                 <h3>Destino</h3>
-                <p>Dematagoda Bus Stand</p>
-                <p>Duration: 30 minutes</p>
+                <p>{dataRouter.destination}</p>
               </div>
-              <div>
-                <h3>Passengers</h3>
-                <p>3 adult - 1 child</p>
-                <p>Cost: 1525.00</p>
+              <div className="details-container">
+                <p>Distância Total: {dataRouter.data.distance}</p>
+                <p>Duração: {dataRouter.data.duration}</p>
+                <p>Valor: R${driverUse.value}</p>
               </div>
             </div>
             {isLoaded && (
@@ -92,21 +148,47 @@ const Viagem = () => {
                   fullscreenControl: false,
                 }}
                 onLoad={(map) => setMapa(map)}
-              ></GoogleMap>
+              >
+                {directionsResponse && (
+                  <DirectionsRenderer
+                    directions={directionsResponse}
+                  ></DirectionsRenderer>
+                )}
+              </GoogleMap>
             )}
           </div>
         </div>
+        <FaChevronRight
+          className={
+            indexDriver < maxPage ? "btn-scroll" : "btn-scroll disable"
+          }
+          onClick={nextPage}
+        ></FaChevronRight>
       </div>
-      <div className="buttons-container">
-        <button
-          className="btn-back"
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          Voltar
-        </button>
-        <button className="btn-confirm">Confirmar</button>
+      <div className="pages-indicator-container">
+        <div className="indicator-driver">
+          {dataRouter.data.options.map((driver, i) => (
+            <p
+              style={{
+                background: i === indexDriver ? "#ff9900" : "",
+                color: i === indexDriver ? "white" : "",
+              }}
+            >
+              {i + 1}
+            </p>
+          ))}
+        </div>
+        <div className="buttons-container">
+          <button
+            className="btn-back"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Voltar
+          </button>
+          <button className="btn-confirm">Confirmar</button>
+        </div>
       </div>
     </div>
   );
