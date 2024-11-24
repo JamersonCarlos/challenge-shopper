@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./NovaCorrida.css";
 
+//Import Utils
+import { getRoute } from "../utils/getRoute";
+
 //Interfaces
 import { ResultRides } from "../interfaces/resultRide.interface";
 
@@ -15,7 +18,7 @@ import {
 } from "@react-google-maps/api";
 
 const NovaCorrida = () => {
-  const [mapa, setMapa] = useState<google.maps.Map>();
+  const [mapa, setMapa] = useState<google.maps.Map | null>();
   const [center, setCenter] = useState({
     lat: -23.541596480067913,
     lng: -46.629363693411726,
@@ -33,7 +36,6 @@ const NovaCorrida = () => {
 
   useEffect(() => {
     if (isLoaded) {
-      const directionsService = new window.google.maps.DirectionsService();
       setCenter({
         lat: Number(drivers?.origin.latitude),
         lng: Number(drivers?.origin.longitude),
@@ -47,24 +49,15 @@ const NovaCorrida = () => {
         lat: Number(drivers?.destination.latitude),
         lng: Number(drivers?.destination.longitude),
       };
-      directionsService.route(
-        {
-          origin,
-          destination,
-          travelMode: window.google.maps.TravelMode.DRIVING,
-        },
-        (result, status) => {
-          console.log("Status da rota:", status);
-          if (status === "OK" && result) {
-            console.log("Rota encontrada:", result);
-            setDirectionsResponse(result);
-          } else {
-            console.error("Erro ao obter a rota:", status);
-          }
-        }
-      );
+      getRoute(origin, destination)
+        .then((route) => {
+          setDirectionsResponse(route);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-  }, [drivers]);
+  }, [drivers, isLoaded]);
 
   if (!isLoaded) {
     return <div>Carregando mapa...</div>; // Renderize algo enquanto o mapa carrega
