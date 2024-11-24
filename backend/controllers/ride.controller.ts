@@ -38,23 +38,33 @@ interface ResponseBody {
   options: Array<DriverAttributes>;
 }
 
-router.get("/estimate", async (req: Request, res: Response) => {
+router.post("/estimate", async (req: Request, res: Response) => {
   try {
     const { id, origin, destination }: RequestBody = req.body;
     let originCoordinates = { latitude: 0, longitude: 0 };
     let destinationCoordinates = { latitude: 0, longitude: 0 };
 
     if (!origin || !destination) {
-      res.status(400).json({ error: "Origin and destination are required." });
+      return res
+        .status(400)
+        .json({ error: "Origin and destination are required." });
     }
 
     try {
       originCoordinates = await getLatLng(origin, client);
+    } catch (error) {
+      return res.status(400).json({
+        error_code: "INVALID ADRESS",
+        error_description: "Endereço de origem inválido",
+      });
+    }
+
+    try {
       destinationCoordinates = await getLatLng(destination, client);
     } catch (error) {
-      res.status(400).json({
+      return res.status(400).json({
         error_code: "INVALID ADRESS",
-        error_description: error instanceof Error ? error.message : "",
+        error_description: "Endereço de destino inválido",
       });
     }
 
@@ -69,7 +79,7 @@ router.get("/estimate", async (req: Request, res: Response) => {
     const result = response.data.rows[0].elements[0];
 
     if (result.status !== "OK") {
-      res
+      return res
         .status(400)
         .json({ error: "Unable to calculate distance and duration." });
     }
