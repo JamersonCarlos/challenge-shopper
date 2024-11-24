@@ -16,11 +16,12 @@ function App() {
       <BrowserRouter>
         <NavBar></NavBar>
         <Routes>
-          <Route path="/" element={<Viagem></Viagem>}></Route>
+          <Route path="/" element={<Home></Home>}></Route>
           <Route
             path="/solicitar-corrida"
             element={<NovaCorrida></NovaCorrida>}
           ></Route>
+          <Route path="/drivers" element={<Viagem></Viagem>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
