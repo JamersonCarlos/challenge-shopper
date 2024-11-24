@@ -97,11 +97,16 @@ img {
 }
 
 .details-container {
+  padding: 10px 0px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.details-container > p {
+  flex: auto;
 }
 
 .informations-column h3 {
@@ -112,7 +117,6 @@ img {
 
 .informations-column p {
   border: 1px solid #ff9900;
-  margin-bottom: 10px;
   color: #636363;
   height: 30px;
   padding: 10px;
