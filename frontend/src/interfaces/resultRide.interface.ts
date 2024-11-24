@@ -25,11 +25,14 @@ interface Opcao {
   id: number;
   name: string;
   description: string;
-  car: string;
+  vehicle: string;
   ratePerKm: number;
   minKm: number;
+  photoCar?: string;
+  photoProfile?: string;
   value: number;
   review: Review;
+  registeredSince?: number;
 }
 
 export interface ResultRides {
