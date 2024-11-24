@@ -3,13 +3,14 @@ import "./SearchRideForm.css";
 import { useState } from "react";
 import { FaIdCard, FaMapMarkerAlt, FaLocationArrow } from "react-icons/fa";
 import { Autocomplete } from "@react-google-maps/api";
-
+import { useNavigate } from "react-router-dom";
 
 //Função de verificação
 import { isErrorInvalidAddress } from "../interfaces/resultRide.interface";
 
 //Interfaces
 import { ResultRides } from "../interfaces/resultRide.interface";
+import { NavigationState } from "../interfaces/routesData.interface";
 
 //Components
 import Loading from "./Loading";
@@ -27,10 +28,16 @@ interface ChildrenProps {
 }
 
 const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
+  //Instância para navegação
+  const navigate = useNavigate();
+
   //Atributos formulário
   const [cpfValue, setCpfvalue] = useState<string>("");
   const [origin, setOrigin] = useState<string>("");
   const [destination, setDestination] = useState<string>("");
+
+  //Dados obtidos da API
+  const [result, setResult] = useState<ResultRides | null>(null);
 
   //Carregamento dos dados
   const [loading, setLoading] = useState<boolean>(false);
@@ -78,6 +85,8 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
     } else {
       setErrorDestination("");
       setErrorOrigin("");
+      console.log(data);
+      setResult(data);
       onResult(data);
     }
     setLoading(false);
@@ -105,6 +114,11 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
     }
   };
 
+  //Limpando endereços de origem e destino
+  const clearOriginDestination = () => {
+    setResult(null);
+  };
+
   //Habilita o botão quando todos os campos forem preenchidos corretamente
   const isFormValid = () => {
     const isCpfValid = errorCpf === ""; // Se não houver erro de CPF
@@ -118,7 +132,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
     <div className="search-ride-form">
       {loading && <Loading></Loading>}
       {!loading && (
-        <div>
+        <div className="form-container">
           <h2>Buscar Motorista</h2>
           <form onSubmit={handleSubmit}>
             <label>
@@ -152,6 +166,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                     placeholder="Endereço de origem"
                     value={origin}
                     onChange={(e) => setOrigin(e.target.value)}
+                    readOnly={result ? true : false}
                   />
                 </Autocomplete>
                 <FaMapMarkerAlt className="icon-right" />{" "}
@@ -179,6 +194,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                     placeholder="Endereço do destino"
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
+                    readOnly={result ? true : false}
                   />
                 </Autocomplete>
                 <FaLocationArrow className="icon-right" />{" "}
@@ -187,8 +203,40 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                 )}
               </div>
             </label>
-
-            <input type="submit" value="Buscar" disabled={!isFormValid()} />
+            {result && (
+              <div className="preview-results-container">
+                <div className="results">
+                  <p>Distância: {result.distance} km</p>
+                  <p>Duration: {result.duration}</p>
+                </div>
+                <div className="buttons-container">
+                  <button className="btn-back" onClick={clearOriginDestination}>
+                    Editar
+                  </button>
+                  <button
+                    className="btn-confirm"
+                    onClick={() => {
+                      navigate("/drivers", {
+                        state: {
+                          data: result,
+                          origin: origin,
+                          destination: destination,
+                        } as NavigationState,
+                      });
+                    }}
+                  >
+                    Escolher Motorista
+                  </button>
+                </div>
+              </div>
+            )}
+            {!result && (
+              <input
+                type="submit"
+                value="Estimar Rota"
+                disabled={!isFormValid()}
+              />
+            )}
           </form>
         </div>
       )}
