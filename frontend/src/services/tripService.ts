@@ -5,7 +5,7 @@ const url = "http://localhost:8080/";
 
 export const confirmTrip = async (trip: Trip) => {
   try {
-    const response = await axios.post(`${url}ride/confirm`, trip, {
+    const response = await axios.patch(`${url}ride/confirm`, trip, {
       headers: {
         "Content-Type": "application/json",
       },
