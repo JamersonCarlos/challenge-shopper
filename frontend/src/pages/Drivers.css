@@ -221,3 +221,48 @@ img {
   margin-left: 10px;
   color: #ff9900;
 }
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%); /* Começa fora da tela à direita */
+    opacity: 0; /* Começa invisível */
+  }
+  100% {
+    transform: translateX(0); /* Chega no estado final, centralizado */
+    opacity: 1; /* Torna-se visível */
+  }
+}
+
+.confirmation-card {
+  position: fixed;
+  top: 10px;
+  right: 40px;
+  border: 1px solid #0d6110;
+  color: #3e4958;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  text-align: justify;
+  width: 300px;
+
+  /*Animação*/
+  animation: slideInFromRight 0.5s ease-out forwards;
+}
+
+.confirmation-card h2 {
+  margin-bottom: 10px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-alert {
+  margin-left: 10px;
+}
+
+.confirmation-card p {
+  font-size: 12px;
+}
