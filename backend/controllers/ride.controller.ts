@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
-import { Driver } from "../models/driver.model";
 import getLatLng from "../utils/getLongitudeAndLatitude";
+
+//Models
+import { Driver } from "../models/driver.model";
+import { Trip } from "../models/trip.model";
 
 //Interface
 import { DriverAttributes } from "../models/driver.model";
@@ -36,6 +39,7 @@ interface RequestBodyConfirm {
   };
   value: number;
 }
+
 interface ResponseBody {
   origin: {
     latitude: number;
@@ -161,6 +165,10 @@ router.post("/estimate", async (req: Request, res: Response) => {
   }
 });
 
+("POST /ride/confirm");
+router.post("/confirm", async (req: Request, res: Response) => {
+  try {
+    const result = req.body; 
     //Validando dados de entrada
     if (!isRequestBodyConfirm(req.body)) {
       return res.status(400).json({
