@@ -5,5 +5,6 @@ import { ResultRides } from "./resultRide.interface"
 export interface NavigationState { 
     data: ResultRides, 
     origin: string, 
-    destination: string 
+    destination: string, 
+    id: string,
   }
