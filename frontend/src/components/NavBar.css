@@ -4,11 +4,12 @@
   border-right: 1px solid #ff9900;
 }
 
-h1 {
+.vertical-menu h1 {
   color: #ff9900;
   font-size: 26px;
   font-family: "Poppins", sans-serif;
   cursor: pointer;
+  border: none;
 }
 
 .menu {
