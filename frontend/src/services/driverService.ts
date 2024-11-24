@@ -1,8 +1,5 @@
 import axios, { AxiosError } from "axios";
 
-//Functions import
-import { isErrorInvalidAddress } from "../interfaces/resultRide.interface";
-
 //Interface Error
 import { ErrorInvalidAddress } from "../interfaces/resultRide.interface";
 
