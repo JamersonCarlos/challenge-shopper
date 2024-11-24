@@ -62,10 +62,10 @@ function isRequestBodyConfirm(data: any): data is RequestBodyConfirm {
     typeof data.customer_id === "string" &&
     typeof data.value === "number" &&
     typeof data.distance === "number" &&
-    typeof data.duration === "string" && 
-    typeof data.driver === "object" && 
-    typeof data.driver.id === "number" && 
-    typeof data.driver.name === "string" 
+    typeof data.duration === "string" &&
+    typeof data.driver === "object" &&
+    typeof data.driver.id === "number" &&
+    typeof data.driver.name === "string"
   );
 }
 
@@ -165,10 +165,10 @@ router.post("/estimate", async (req: Request, res: Response) => {
   }
 });
 
-("POST /ride/confirm");
-router.post("/confirm", async (req: Request, res: Response) => {
+("PATCH /ride/confirm");
+router.patch("/confirm", async (req: Request, res: Response) => {
   try {
-    const result = req.body; 
+    const result = req.body;
     //Validando dados de entrada
     if (!isRequestBodyConfirm(req.body)) {
       return res.status(400).json({
