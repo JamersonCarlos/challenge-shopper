@@ -161,4 +161,12 @@ router.post("/estimate", async (req: Request, res: Response) => {
   }
 });
 
+    //Validando dados de entrada
+    if (!isRequestBodyConfirm(req.body)) {
+      return res.status(400).json({
+        error_code: "INVALID_DATA",
+        error_description: "Os dados fornecidos não são válidos",
+      });
+    }
+    const data: RequestBodyConfirm = req.body;
 module.exports = router;
