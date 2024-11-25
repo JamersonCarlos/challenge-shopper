@@ -9,4 +9,11 @@ export interface Trip {
     name: string
   }
   duration: string;
+  createdAt?: string; 
+}
+
+export interface responseSearchTrips { 
+  customer_id: string, 
+  rides: Array<Trip>,
+  error_code?: string,
 }
