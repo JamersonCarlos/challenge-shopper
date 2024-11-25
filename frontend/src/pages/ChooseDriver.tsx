@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
-import "./Drivers.css";
+import "./ChooseDriver.css";
 
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
+import { FiAlertOctagon } from "react-icons/fi";
+
+//Google Maps
 import {
   useJsApiLoader,
   GoogleMap,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
-import { FiAlertOctagon } from "react-icons/fi";
 
 //Services
 import { confirmTrip } from "../services/tripService";
@@ -21,8 +23,7 @@ import { NavigationState } from "../interfaces/routesData.interface";
 import { getRoute } from "../utils/getRoute";
 import { Trip } from "../interfaces/trip.interface";
 
-
-const Viagem: React.FC = () => {
+const ChooseDriver: React.FC = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyAMqYayPsqD8jqBw_dL-aclx-_y2UCbClA",
     libraries: ["places"],
@@ -114,8 +115,6 @@ const Viagem: React.FC = () => {
         });
     }
   }, [dataRouter, isLoaded]);
-
-  
 
   return (
     <div className="container-main">
@@ -247,4 +246,4 @@ const Viagem: React.FC = () => {
   );
 };
 
-export default Viagem;
+export default ChooseDriver;

@@ -216,7 +216,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                   <button
                     className="btn-confirm"
                     onClick={() => {
-                      navigate("/motoristas", {
+                      navigate("/motoristas-disponiveis", {
                         state: {
                           data: result,
                           origin: origin,
