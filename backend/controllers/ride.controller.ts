@@ -11,7 +11,7 @@ import { DriverAttributes } from "../models/driver.model";
 
 //Google Maps
 import { Client } from "@googlemaps/google-maps-services-js";
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 import { Assessment } from "../models/assessment.model";
 
 //Roteamento
@@ -69,7 +69,7 @@ function isRequestBodyConfirm(data: any): data is RequestBodyConfirm {
   );
 }
 
-("POST /ride/estimate");
+//"POST /ride/estimate"
 router.post("/estimate", async (req: Request, res: Response) => {
   try {
     const { id, origin, destination }: RequestBody = req.body;
@@ -165,7 +165,7 @@ router.post("/estimate", async (req: Request, res: Response) => {
   }
 });
 
-("PATCH /ride/confirm");
+//"PATCH /ride/confirm"
 router.patch("/confirm", async (req: Request, res: Response) => {
   try {
     const result = req.body;
@@ -203,16 +203,15 @@ router.patch("/confirm", async (req: Request, res: Response) => {
     }
 
     const trip = await Trip.create({
-      origin: data.origin,
-      destination: data.destination,
       customer_id: data.customer_id,
-      value: data.value,
+      destination: data.destination,
+      origin: data.origin,
       distance: data.distance,
       id_driver: data.driver.id,
       driver_name: data.driver.name,
+      value: data.value,
       duration: data.duration,
     });
-
     res.status(200).json({
       success: true,
     });
@@ -220,6 +219,13 @@ router.patch("/confirm", async (req: Request, res: Response) => {
     res.status(500).json({});
   }
 });
+
+//GET /ride/{customer_id}?driver_id={id do motorista}
+router.get("/:customer_id", async (req: Request, res: Response) => {
+  try {
+    const { customer_id } = req.params;
+    const { driver_id } = req.query;
+    let whereCondition: any = { customer_id };
 
     if (driver_id) {
       whereCondition.id_driver = Number(driver_id);
@@ -232,4 +238,32 @@ router.patch("/confirm", async (req: Request, res: Response) => {
         return res.status(400).json({ error_code: "INVALID_DRIVER" });
       }
     }
+
+    //Corrigir bug da documentação
+
+    let listTrips = await Trip.findAll({
+      where: whereCondition,
+    });
+
+    const response = {
+      customer_id,
+      rides: listTrips.map((trip) => {
+        const { id_driver, driver_name, ...rest } = trip.toJSON();
+        return {
+          ...rest,
+          driver: {
+            id: id_driver,
+            name: driver_name,
+          },
+        };
+      }),
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error_code: "INTERNAL_SERVICE_ERROR" });
+  }
+});
+
 module.exports = router;
