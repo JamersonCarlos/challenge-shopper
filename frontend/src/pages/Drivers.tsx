@@ -21,15 +21,13 @@ import { NavigationState } from "../interfaces/routesData.interface";
 import { getRoute } from "../utils/getRoute";
 import { Trip } from "../interfaces/trip.interface";
 
-const Viagem = () => {
+
+const Viagem: React.FC = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyAMqYayPsqD8jqBw_dL-aclx-_y2UCbClA",
     libraries: ["places"],
     language: "pt",
   });
-
-  //ConfirmOperation
-  const [showConfirmation, setShowConfirmation] = useState(false);
 
   //Roteamento
   const navigate = useNavigate();
@@ -44,6 +42,9 @@ const Viagem = () => {
     lat: -23.541596480067913,
     lng: -46.629363693411726,
   });
+
+  //ConfirmOperation
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   //Carregamento de dados recebidos via router
   const dataRouter: NavigationState = location.state;
@@ -85,7 +86,7 @@ const Viagem = () => {
     console.log(response);
     if (response.success) {
       setShowConfirmation(true);
-      setTimeout(() => navigate("/viagens"), 3000);
+      setTimeout(() => navigate("/"), 3000);
     }
   };
 
@@ -113,6 +114,8 @@ const Viagem = () => {
         });
     }
   }, [dataRouter, isLoaded]);
+
+  
 
   return (
     <div className="container-main">
