@@ -221,4 +221,15 @@ router.patch("/confirm", async (req: Request, res: Response) => {
   }
 });
 
+    if (driver_id) {
+      whereCondition.id_driver = Number(driver_id);
+      const result = await Driver.findOne({
+        where: {
+          id: Number(driver_id),
+        },
+      });
+      if (!result) {
+        return res.status(400).json({ error_code: "INVALID_DRIVER" });
+      }
+    }
 module.exports = router;
