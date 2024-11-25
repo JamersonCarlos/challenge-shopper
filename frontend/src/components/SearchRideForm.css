@@ -13,7 +13,7 @@
   width: 100%;
 }
 
-form {
+.form-ride {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,7 +22,7 @@ form {
   font-family: "Manrope", sans-serif;
 }
 
-form label {
+.form-ride label {
   width: 100%;
 }
 
@@ -36,12 +36,12 @@ form input {
   padding-left: 10px;
 }
 
-form span {
+.form-ride span {
   color: white;
   font-size: 12px;
 }
 
-form input[type="submit"] {
+.form-ride input[type="submit"] {
   width: 100%;
   max-width: 185px;
   height: 30px;
@@ -53,16 +53,16 @@ form input[type="submit"] {
   cursor: pointer;
 }
 
-form input[type="submit"]:disabled {
+.form-ride input[type="submit"]:disabled {
   background-color: #ff99005b;
   cursor: not-allowed;
 }
 
-form input:focus {
+.form-ride input:focus {
   outline: none;
 }
 
-form input::placeholder {
+.form-ride input::placeholder {
   font-size: 10px;
 }
 
@@ -91,10 +91,6 @@ h2 {
   text-align: center;
 }
 
-.error-text {
-  color: red;
-  font-size: 10px;
-}
 
 .preview-results-container {
   display: flex;

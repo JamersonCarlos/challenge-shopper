@@ -134,7 +134,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
       {!loading && (
         <div className="form-container">
           <h2>Buscar Motorista</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="form-ride">
             <label>
               <span>CPF</span>
               <div className="input-container">
@@ -216,12 +216,12 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                   <button
                     className="btn-confirm"
                     onClick={() => {
-                      navigate("/drivers", {
+                      navigate("/motoristas", {
                         state: {
                           data: result,
                           origin: origin,
                           destination: destination,
-                          id: cpfValue
+                          id: cpfValue,
                         } as NavigationState,
                       });
                     }}
