@@ -1,0 +1,77 @@
+.trips {
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 100%;
+}
+
+.trips-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 40px;
+  background-color: white;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  height: 85%;
+}
+
+.trips-container > h3 {
+  color: #ff9900;
+  padding-bottom: 10px;
+}
+
+.form-filter > form {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  width: 100%;
+  gap: 20px;
+  padding: 0px;
+}
+
+.form-filter input {
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border: 1px solid #ff9900;
+  outline: none;
+}
+
+.btn-filter {
+  width: 70px;
+  border-radius: 5px;
+  background-color: #ff9900;
+  color: #f5f5f5;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.btn-filter:disabled {
+  background-color: #ff9900b9;
+  cursor: auto;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 10px -10px;
+}
+
+th {
+  background-color: #eff4fa;
+  padding: 10px;
+  color: #8f9bb3;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+tbody > tr {
+  border-bottom: 1px solid #eff4fa;
+}
+
+td {
+  text-align: center;
+  color: #222b45;
+  padding: 10px;
+}
