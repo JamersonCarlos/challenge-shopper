@@ -1,9 +1,13 @@
 //Google Maps
 import { Client } from "@googlemaps/google-maps-services-js";
+
+//Interface Coordenadas 
+import { coordinatesInterface } from "../interfaces/coordinatesInterface";
+
 import dotenv from "dotenv";
 dotenv.config();
 
-const getLatLng = async (address: string, client: Client ) => {
+const getLatLng = async (address: string, client: Client ):Promise<coordinatesInterface> => {
     try {
       const geocodeResponse = await client.geocode({
         params: {
