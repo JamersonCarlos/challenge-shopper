@@ -8,9 +8,16 @@ import { Trip } from "../models/trip.model";
 
 //Interface
 import { DriverAttributes } from "../models/driver.model";
+import { coordinatesInterface } from "../interfaces/coordinatesInterface";
+import { ResponseBodyConfirm } from "../interfaces/responsesInterface";
+import { ResponseBodyRideEstimate } from "../interfaces/responsesInterface";
 
 //Google Maps
-import { Client } from "@googlemaps/google-maps-services-js";
+import {
+  Client,
+  DistanceMatrixResponse,
+  DistanceMatrixRowElement,
+} from "@googlemaps/google-maps-services-js";
 import { Op, where } from "sequelize";
 import { Assessment } from "../models/assessment.model";
 
@@ -27,34 +34,7 @@ interface RequestBody {
   destination: string;
 }
 
-interface RequestBodyConfirm {
-  customer_id: string;
-  origin: string;
-  destination: string;
-  distance: number;
-  duration: string;
-  driver: {
-    id: number;
-    name: string;
-  };
-  value: number;
-}
-
-interface ResponseBody {
-  origin: {
-    latitude: number;
-    longitude: number;
-  };
-  destination: {
-    latitude: number;
-    longitude: number;
-  };
-  distance: number;
-  duration: string;
-  options: Array<DriverAttributes>;
-}
-
-function isRequestBodyConfirm(data: any): data is RequestBodyConfirm {
+function isRequestBodyConfirm(data: any): data is ResponseBodyConfirm {
   return (
     typeof data === "object" &&
     typeof data.origin === "string" &&
@@ -73,8 +53,11 @@ function isRequestBodyConfirm(data: any): data is RequestBodyConfirm {
 router.post("/estimate", async (req: Request, res: Response) => {
   try {
     const { id, origin, destination }: RequestBody = req.body;
-    let originCoordinates = { latitude: 0, longitude: 0 };
-    let destinationCoordinates = { latitude: 0, longitude: 0 };
+    let originCoordinates: coordinatesInterface = { latitude: 0, longitude: 0 };
+    let destinationCoordinates: coordinatesInterface = {
+      latitude: 0,
+      longitude: 0,
+    };
 
     if (!origin || !destination) {
       return res
@@ -100,7 +83,7 @@ router.post("/estimate", async (req: Request, res: Response) => {
       });
     }
 
-    const response = await client.distancematrix({
+    const response: DistanceMatrixResponse = await client.distancematrix({
       params: {
         origins: [origin],
         destinations: [destination],
@@ -108,7 +91,7 @@ router.post("/estimate", async (req: Request, res: Response) => {
       },
     });
 
-    const result = response.data.rows[0].elements[0];
+    const result: DistanceMatrixRowElement = response.data.rows[0].elements[0];
 
     if (result.status !== "OK") {
       return res
@@ -116,12 +99,12 @@ router.post("/estimate", async (req: Request, res: Response) => {
         .json({ error: "Unable to calculate distance and duration." });
     }
 
-    const distance = result.distance.text;
+    const distance: string = result.distance.text;
     const distanceNumber: number = parseFloat(distance.replace(/[^\d.]/g, ""));
-    const duration = result.duration.text;
+    const duration: string = result.duration.text;
 
     //Consultando os motoristas que atendem ao requisito de Kilometragem minima
-    const driversWithMinKm = await Driver.findAll({
+    const driversWithMinKm: Driver[] = await Driver.findAll({
       where: {
         minKm: {
           [Op.lt]: distanceNumber,
@@ -129,7 +112,7 @@ router.post("/estimate", async (req: Request, res: Response) => {
       },
     });
 
-    const driversAndValues = await Promise.all(
+    const driversAndValues: DriverAttributes[] = await Promise.all(
       driversWithMinKm.map(async (driver) => {
         let driverValues = driver.dataValues;
         const review = await Assessment.findAll({
@@ -146,7 +129,7 @@ router.post("/estimate", async (req: Request, res: Response) => {
       })
     );
 
-    const objectResponse: ResponseBody = {
+    const objectResponse: ResponseBodyRideEstimate = {
       origin: {
         latitude: originCoordinates.latitude,
         longitude: originCoordinates.longitude,
@@ -168,7 +151,6 @@ router.post("/estimate", async (req: Request, res: Response) => {
 //"PATCH /ride/confirm"
 router.patch("/confirm", async (req: Request, res: Response) => {
   try {
-    const result = req.body;
     //Validando dados de entrada
     if (!isRequestBodyConfirm(req.body)) {
       return res.status(400).json({
@@ -176,7 +158,7 @@ router.patch("/confirm", async (req: Request, res: Response) => {
         error_description: "Os dados fornecidos não são válidos",
       });
     }
-    const data: RequestBodyConfirm = req.body;
+    const data: ResponseBodyConfirm = req.body;
 
     //Validando se o motorista existe
     const drivers: Driver[] = await Driver.findAll({
@@ -202,7 +184,7 @@ router.patch("/confirm", async (req: Request, res: Response) => {
       });
     }
 
-    const trip = await Trip.create({
+    const trip: Trip = await Trip.create({
       customer_id: data.customer_id,
       destination: data.destination,
       origin: data.origin,
@@ -239,9 +221,7 @@ router.get("/:customer_id", async (req: Request, res: Response) => {
       }
     }
 
-    //Corrigir bug da documentação
-
-    let listTrips = await Trip.findAll({
+    let listTrips: Trip[] = await Trip.findAll({
       where: whereCondition,
     });
 
