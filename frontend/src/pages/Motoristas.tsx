@@ -42,6 +42,19 @@ const Motoristas: React.FC = () => {
             />
           </label>
         </form>
+        {drivers
+          .filter((driver) =>
+            driver.name.toLowerCase().includes(nameDriver.toLowerCase())
+          )
+          .map((driver) => (
+            <div className="card-driver">
+              <div className="photo-profile">
+                <img src={driver.photoProfile} alt="" />
+              </div>
+              <div className="description">
+                <p>{driver.description}</p>
+                <p>
+                  <strong className="emphasis-text">
                     Quilometragem Miníma:{" "}
                   </strong>{" "}
                   {driver.minKm} km
