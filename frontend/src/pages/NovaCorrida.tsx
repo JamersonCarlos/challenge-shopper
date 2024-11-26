@@ -9,6 +9,7 @@ import { ResultRides } from "../interfaces/resultRide.interface";
 
 //Components
 import SearchRideForm from "../components/SearchRideForm";
+import Loading from "../components/Loading";
 
 //Google Maps
 import {
@@ -62,7 +63,7 @@ const NovaCorrida = () => {
   }, [drivers, isLoaded]);
 
   if (!isLoaded) {
-    return <div>Carregando mapa...</div>; // Renderize algo enquanto o mapa carrega
+    return (<Loading></Loading>); 
   }
 
   return (
