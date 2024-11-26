@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { Trip } from "../interfaces/trip.interface";
+import { responseSearchTrips, Trip } from "../interfaces/trip.interface";
 import { searchTripsInterface } from "../interfaces/searchTrip.interface";
 
 const url = "http://localhost:8080/";
@@ -41,5 +41,18 @@ export const searchTrips = async (search: searchTripsInterface) => {
         return dataError;
       }
     }
+  }
+};
+
+export const listTrips = async ():Promise<responseSearchTrips | undefined> => {
+  try {
+    const response = await axios.get(`${url}trips`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data; 
+  } catch (error) {
+    console.log(error);
   }
 };
