@@ -84,12 +84,14 @@ const Trips = () => {
                 />
                 {errorIdDriver && <p className="error-text">{errorIdDriver}</p>}
               </label>
-              <input
+              <button
                 type="submit"
                 value="Filtrar"
                 className="btn-filter"
                 disabled={!isFormValid()}
-              />
+              >
+                Filtrar
+              </button>
             </form>
           </div>
         </div>
