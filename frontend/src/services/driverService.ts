@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 
 //Interface Error
 import { ErrorInvalidAddress } from "../interfaces/resultRide.interface";
+import { Driver } from "../interfaces/driver.interface";
 
 const url = "http://localhost:8080/";
 
@@ -35,5 +36,19 @@ export const searchDriver = async (
         return dataError;
       }
     }
+  }
+};
+
+export const listDrivers = async (): Promise<Driver[] | undefined> => {
+  try {
+    const response = await axios.get<Driver[]>(`${url}drivers`, {
+      headers: { 
+        "Content-Type": "application/json",
+      },
+    });
+    const result: Array<Driver> = response.data; 
+    return result; 
+  } catch (error) {
+    console.log(error); 
   }
 };
