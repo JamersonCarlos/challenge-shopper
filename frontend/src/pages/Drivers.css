@@ -8,13 +8,27 @@
   font-size: 20px;
 }
 
+.container-main {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  margin-bottom: 10px;
+}
+
+.trip-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
+}
+
 .viagem-container {
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 40px 0px 20px 0px;
+  padding: 20px 0px;
   font-family: "Poppins", sans-serif;
   background-color: #ffffff;
 }
@@ -22,7 +36,7 @@
 .driver-container,
 .vehicle-container,
 .review-container {
-  width: 25%;
+  width: 20%;
   min-width: 200px;
   height: 400px;
   padding: 15px;
@@ -50,10 +64,11 @@
   border-radius: 5px;
 }
 
-img {
+.photo {
   width: 100%;
   border-radius: 20px;
   margin-bottom: 10px;
+  max-height: 250px;
 }
 
 .viagem-container p {
@@ -69,18 +84,9 @@ img {
   font-size: 18px;
 }
 
-.btn-visit-profile {
-  width: 100%;
-  font-size: 15px;
-  background-color: transparent;
-  border: 1px solid #ff9900;
-  border-radius: 10px;
-  padding: 8px;
-}
-
 .informations-container {
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 47%;
+  width: 55%;
   height: 400px;
   border-radius: 10px;
   margin-left: 20px;
@@ -91,7 +97,6 @@ img {
 }
 
 .informations-column {
-  padding: 10px 10px 0px 10px;
   display: flex;
   flex-direction: column;
 }
@@ -129,7 +134,6 @@ img {
   justify-content: center;
 }
 
-.btn-back,
 .btn-confirm {
   border-radius: 10px;
   border: none;
@@ -137,11 +141,9 @@ img {
   color: white;
   font-weight: bold;
   cursor: pointer;
+  margin-right: 5px;
 }
 
-.btn-back {
-  background-color: #3e4958;
-}
 .btn-confirm {
   background-color: #ff9900;
 }
@@ -151,13 +153,6 @@ img {
   font-size: 50px;
   margin: 10px;
   cursor: pointer;
-}
-
-.informations {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
 }
 
 .pages-indicator-container {
@@ -206,7 +201,7 @@ img {
   align-items: center;
   justify-content: space-between;
   height: 400px;
-  width: 25%;
+  width: 20%;
   gap: 10px;
 }
 
@@ -220,4 +215,62 @@ img {
 .title-reviews .star-icon {
   margin-left: 10px;
   color: #ff9900;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%); /* Começa fora da tela à direita */
+    opacity: 0; /* Começa invisível */
+  }
+  100% {
+    transform: translateX(0); /* Chega no estado final, centralizado */
+    opacity: 1; /* Torna-se visível */
+  }
+}
+
+.confirmation-card {
+  position: fixed;
+  top: 10px;
+  right: 40px;
+  border: 1px solid #0d6110;
+  color: #3e4958;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  text-align: justify;
+  width: 300px;
+
+  /*Animação*/
+  animation: slideInFromRight 0.5s ease-out forwards;
+}
+
+.confirmation-card h2 {
+  margin-bottom: 10px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-alert {
+  margin-left: 10px;
+}
+
+.confirmation-card p {
+  font-size: 12px;
+}
+
+.btn-visit-profile {
+  width: 100%;
+  font-size: 15px;
+  background-color: transparent;
+  border: 1px solid #ff9900;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.btn-confirm-driver {
+  margin-right: 30px;
 }
