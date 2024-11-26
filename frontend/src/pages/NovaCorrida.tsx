@@ -29,7 +29,9 @@ const NovaCorrida = () => {
   >();
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAMqYayPsqD8jqBw_dL-aclx-_y2UCbClA",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
+      ? process.env.REACT_APP_GOOGLE_API_KEY
+      : "",
     libraries: ["places"],
     language: "pt",
   });
