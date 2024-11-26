@@ -2,7 +2,7 @@ import React from "react";
 import "./Trips.css";
 import { useState } from "react";
 
-//Utils 
+//Utils
 import { convert } from "../utils/convertDate";
 
 //Interfaces
@@ -41,7 +41,7 @@ const Trips = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response:responseSearchTrips = await searchTrips({
+    const response: responseSearchTrips = await searchTrips({
       customer_id: cpfValue,
       driver_id: idDriver,
     });
@@ -60,36 +60,38 @@ const Trips = () => {
   return (
     <div className="trips">
       <div className="trips-container">
-        <h3>Buscar Viagem</h3>
-        <div className="form-filter">
-          <form onSubmit={handleSubmit}>
-            <label>
-              <InputMask
-                mask={"999.999.999-99"}
-                value={cpfValue}
-                name="cpf"
-                placeholder="999.999.999-99"
-                onChange={handleCPF}
-              ></InputMask>
-              {errorCpf && <p className="error-text">{errorCpf}</p>}
-            </label>
-            <label>
+        <div className="search-container">
+          <h3>Buscar Viagem</h3>
+          <div className="form-filter">
+            <form onSubmit={handleSubmit}>
+              <label>
+                <InputMask
+                  mask={"999.999.999-99"}
+                  value={cpfValue}
+                  name="cpf"
+                  placeholder="999.999.999-99"
+                  onChange={handleCPF}
+                ></InputMask>
+                {errorCpf && <p className="error-text">{errorCpf}</p>}
+              </label>
+              <label>
+                <input
+                  type="number"
+                  value={idDriver}
+                  name="idDriver"
+                  placeholder="Digite o ID do motorista"
+                  onChange={(e) => setIdDriver(Number(e.target.value))}
+                />
+                {errorIdDriver && <p className="error-text">{errorIdDriver}</p>}
+              </label>
               <input
-                type="number"
-                value={idDriver}
-                name="idDriver"
-                placeholder="Digite o ID do motorista"
-                onChange={(e) => setIdDriver(Number(e.target.value))}
+                type="submit"
+                value="Filtrar"
+                className="btn-filter"
+                disabled={!isFormValid()}
               />
-              {errorIdDriver && <p className="error-text">{errorIdDriver}</p>}
-            </label>
-            <input
-              type="submit"
-              value="Filtrar"
-              className="btn-filter"
-              disabled={!isFormValid()}
-            />
-          </form>
+            </form>
+          </div>
         </div>
         <table>
           <thead>
@@ -112,7 +114,7 @@ const Trips = () => {
                 <td>{trip.distance} km</td>
                 <td>{trip.duration} </td>
                 <td>{trip.value} </td>
-                {trip.createdAt && (<td>{convert(trip.createdAt)}</td>)}
+                {trip.createdAt && <td>{convert(trip.createdAt)}</td>}
               </tr>
             ))}
           </tbody>
