@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { responseSearchTrips, Trip } from "../interfaces/trip.interface";
 import { searchTripsInterface } from "../interfaces/searchTrip.interface";
 
-const url = "http://localhost:8080/";
+const url = process.env.REACT_APP_API_URL;
 
 export const confirmTrip = async (trip: Trip) => {
   try {

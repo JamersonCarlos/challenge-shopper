@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { ErrorInvalidAddress } from "../interfaces/resultRide.interface";
 import { Driver } from "../interfaces/driver.interface";
 
-const url = "http://localhost:8080/";
+const url = process.env.REACT_APP_API_URL;
 
 export const searchDriver = async (
   id: string,
