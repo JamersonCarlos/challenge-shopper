@@ -4,11 +4,7 @@ import { useState } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 
 //Icons
-import {
-  FaIdCard,
-  FaMapMarkerAlt,
-  FaLocationArrow,
-} from "react-icons/fa";
+import { FaIdCard, FaMapMarkerAlt, FaLocationArrow } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdOutlinePersonSearch } from "react-icons/md";
 
