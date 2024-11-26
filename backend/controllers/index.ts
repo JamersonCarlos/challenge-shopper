@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-const rideRouter = require('./ride.controller');
+const rideRouter: NodeRequire = require('./ride.controller');
 
 router.use('/ride', rideRouter);
 
