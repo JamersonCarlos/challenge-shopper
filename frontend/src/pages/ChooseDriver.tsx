@@ -3,7 +3,7 @@ import "./ChooseDriver.css";
 
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight, FaRegStar } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
 import { FiAlertOctagon } from "react-icons/fi";
 
 //Google Maps
@@ -24,9 +24,10 @@ import { getRoute } from "../utils/getRoute";
 import { Trip } from "../interfaces/trip.interface";
 
 const ChooseDriver: React.FC = () => {
-  
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.GOOGLE_API_KEY || "" ,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
+      ? process.env.REACT_APP_GOOGLE_API_KEY
+      : "",
     libraries: ["places"],
     language: "pt",
   });
@@ -52,25 +53,12 @@ const ChooseDriver: React.FC = () => {
   const dataRouter: NavigationState = location.state;
   const drivers = dataRouter.data.options;
 
-  //Navegação variáveis e funções
-  const [indexDriver, setIndexDriver] = useState(0);
-  const [driverUse, setDriverUse] = useState(drivers[0]);
-  const [maxPage, setMaxPage] = useState(drivers.length - 1);
-
-  const nextPage = () => {
-    setDriverUse(drivers[indexDriver + 1]);
-    setIndexDriver(indexDriver + 1);
-  };
-
-  const backPage = () => {
-    if (indexDriver > 0) {
-      setDriverUse(drivers[indexDriver - 1]);
-      setIndexDriver(indexDriver - 1);
-    }
-  };
-
   //Confirmar viagem
-  const handleConfirm = async () => {
+  const handleConfirm = async (
+    id_driver: number,
+    name_driver: string,
+    value: number
+  ) => {
     const newTrip: Trip = {
       customer_id: dataRouter.id,
       destination: dataRouter.destination,
@@ -78,14 +66,13 @@ const ChooseDriver: React.FC = () => {
       distance: dataRouter.data.distance,
       duration: dataRouter.data.duration,
       driver: {
-        id: driverUse.id,
-        name: driverUse.name,
+        id: id_driver,
+        name: name_driver,
       },
-      value: driverUse.value,
+      value: value,
     };
 
     const response = await confirmTrip(newTrip);
-    console.log(response);
     if (response.success) {
       setShowConfirmation(true);
       setTimeout(() => navigate("/"), 3000);
@@ -135,113 +122,85 @@ const ChooseDriver: React.FC = () => {
       <div className="cabecalho">
         <h1>Motoristas Disponiveis</h1>
       </div>
-      <div className="informations">
-        <FaChevronLeft
-          className={indexDriver !== 0 ? "btn-scroll" : "btn-scroll disable"}
-          onClick={backPage}
-        ></FaChevronLeft>
-        <div className="viagem-container">
-          <div className="driver-container">
-            <img src={driverUse.photoProfile} alt={driverUse.name} />
-            <div>
-              <p>{driverUse.description}</p>
-              <p>Registrado desde de {driverUse.registeredSince}</p>
-            </div>
-          </div>
-          <div className="vehicle-reviews-container">
-            <div className="vehicle-container">
-              <img src={driverUse.photoCar} alt="Carro" />
-              <div>
-                <p>Modelo: {driverUse.vehicle}</p>
+      <div>
+        {drivers.map((driver) => (
+          <div className="trip-info-container">
+            <div className="viagem-container">
+              <div className="driver-container">
+                <img src={driver.photoProfile} alt={driver.name} />
+                <div>
+                  <p>{driver.description}</p>
+                  <p>Registrado desde de {driver.registeredSince}</p>
+                </div>
               </div>
-            </div>
-            <div className="review-container">
-              <p className="title-reviews">
-                Avaliações: {driverUse.review.rating}/5{" "}
-                <FaRegStar className="star-icon"></FaRegStar>
-              </p>
-              <p>{driverUse.review.comment}</p>
-            </div>
-          </div>
-          <div className="informations-container">
-            <div className="informations-column">
-              <div>
-                <h3>Origem</h3>
-                <p>{dataRouter.origin}</p>
+              <div className="vehicle-reviews-container">
+                <div className="vehicle-container">
+                  <img src={driver.photoCar} alt="Carro" />
+                  <div>
+                    <p>Modelo: {driver.vehicle}</p>
+                  </div>
+                </div>
+                <div className="review-container">
+                  <p className="title-reviews">
+                    Avaliações: {driver.review.rating}/5{" "}
+                    <FaRegStar className="star-icon"></FaRegStar>
+                  </p>
+                  <p>{driver.review.comment}</p>
+                </div>
               </div>
-              <div>
-                <h3>Destino</h3>
-                <p>{dataRouter.destination}</p>
-              </div>
-              <div className="details-container">
-                <p>Distância Total: {dataRouter.data.distance} km</p>
-                <p>Duração: {dataRouter.data.duration}</p>
-                <p>Valor: R${driverUse.value}</p>
-              </div>
-            </div>
-            {isLoaded && (
-              <GoogleMap
-                center={center}
-                zoom={14}
-                mapContainerStyle={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "0px 0px 30px 30px",
-                }}
-                options={{
-                  zoomControl: false,
-                  streetViewControl: false,
-                  mapTypeControl: false,
-                  fullscreenControl: false,
-                }}
-                onLoad={(map) => setMapa(map)}
-              >
-                {directionsResponse && (
-                  <DirectionsRenderer
-                    directions={directionsResponse}
-                  ></DirectionsRenderer>
+              <div className="informations-container">
+                <div className="informations-column">
+                  <div>
+                    <h3>Origem</h3>
+                    <p>{dataRouter.origin}</p>
+                  </div>
+                  <div>
+                    <h3>Destino</h3>
+                    <p>{dataRouter.destination}</p>
+                  </div>
+                  <div className="details-container">
+                    <p>Distância Total: {dataRouter.data.distance} km</p>
+                    <p>Duração: {dataRouter.data.duration}</p>
+                    <p>Valor: R${driver.value}</p>
+                  </div>
+                </div>
+                {isLoaded && (
+                  <GoogleMap
+                    center={center}
+                    zoom={14}
+                    mapContainerStyle={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "0px 0px 30px 30px",
+                    }}
+                    options={{
+                      zoomControl: false,
+                      streetViewControl: false,
+                      mapTypeControl: false,
+                      fullscreenControl: false,
+                      gestureHandling: "none",
+                    }}
+                    onLoad={(map) => setMapa(map)}
+                  >
+                    {directionsResponse && (
+                      <DirectionsRenderer
+                        directions={directionsResponse}
+                      ></DirectionsRenderer>
+                    )}
+                  </GoogleMap>
                 )}
-              </GoogleMap>
-            )}
-          </div>
-        </div>
-        <FaChevronRight
-          className={
-            indexDriver < maxPage ? "btn-scroll" : "btn-scroll disable"
-          }
-          onClick={nextPage}
-        ></FaChevronRight>
-      </div>
-      <div className="pages-indicator-container">
-        <div className="indicator-driver">
-          {dataRouter.data.options.map((driver, i) => (
-            <p
-              style={{
-                background: i === indexDriver ? "#ff9900" : "",
-                color: i === indexDriver ? "white" : "",
-              }}
+              </div>
+            </div>
+            <div
+              className="btn-confirm btn-confirm-driver"
+              onClick={() =>
+                handleConfirm(driver.id, driver.name, driver.value)
+              }
             >
-              {i + 1}
-            </p>
-          ))}
-        </div>
-        <div className="buttons-container">
-          <button
-            className="btn-back"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Voltar
-          </button>
-          <button
-            className="btn-confirm"
-            onClick={handleConfirm}
-            disabled={showConfirmation ? true : false}
-          >
-            Confirmar
-          </button>
-        </div>
+              <p>{`Viajar com ${driver.name}`}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

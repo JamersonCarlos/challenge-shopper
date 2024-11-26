@@ -8,6 +8,19 @@
   font-size: 20px;
 }
 
+.container-main {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  margin-bottom: 10px;
+}
+
+.trip-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
+}
+
 .viagem-container {
   display: flex;
   flex-direction: row;
@@ -22,9 +35,9 @@
 .driver-container,
 .vehicle-container,
 .review-container {
-  width: 25%;
+  width: 20%;
   min-width: 200px;
-  height: 400px;
+  height: 450px;
   padding: 15px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -37,8 +50,8 @@
 .review-container {
   margin-left: 20px;
   width: 100%;
-  height: 100%;
 }
+
 
 .review-container {
   justify-content: start;
@@ -54,6 +67,8 @@ img {
   width: 100%;
   border-radius: 20px;
   margin-bottom: 10px;
+  object-fit: cover;
+  max-height: 300px;
 }
 
 .viagem-container p {
@@ -80,8 +95,8 @@ img {
 
 .informations-container {
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 47%;
-  height: 400px;
+  width: 55%;
+  height: 450px;
   border-radius: 10px;
   margin-left: 20px;
   display: flex;
@@ -94,6 +109,7 @@ img {
   padding: 10px 10px 0px 10px;
   display: flex;
   flex-direction: column;
+  
 }
 
 .details-container {
@@ -121,7 +137,7 @@ img {
   height: 30px;
   padding: 10px;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 14px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -160,41 +176,6 @@ img {
   justify-content: center;
 }
 
-.pages-indicator-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 45px;
-}
-
-.buttons-container {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 20px;
-}
-
-.indicator-driver {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
-.indicator-driver p {
-  background-color: #d2d2d2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  width: 30px;
-  height: 30px;
-  border-radius: 100px;
-  color: #ff9900;
-  font-weight: bold;
-}
-
 .disable {
   color: #ff990048;
   cursor: auto;
@@ -205,8 +186,8 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 400px;
-  width: 25%;
+  height: 450px;
+  width: 20%;
   gap: 10px;
 }
 
@@ -265,4 +246,9 @@ img {
 
 .confirmation-card p {
   font-size: 12px;
+}
+
+.btn-confirm-driver { 
+  margin-right: 30px;
+  font-size: 14px;
 }
