@@ -24,8 +24,9 @@ import { getRoute } from "../utils/getRoute";
 import { Trip } from "../interfaces/trip.interface";
 
 const ChooseDriver: React.FC = () => {
+  
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAMqYayPsqD8jqBw_dL-aclx-_y2UCbClA",
+    googleMapsApiKey: process.env.GOOGLE_API_KEY || "" ,
     libraries: ["places"],
     language: "pt",
   });
