@@ -6,7 +6,6 @@ import { Driver } from "../interfaces/driver.interface";
 const Motoristas: React.FC = () => {
   const [nameDriver, setNameDriver] = useState<string>("");
   const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [driverFilter, setDriverFilter] = useState<Driver[]>([]);
 
   useEffect(() => {
     const fetchDrivers = async () => {
@@ -14,7 +13,7 @@ const Motoristas: React.FC = () => {
         const data = await listDrivers();
         if (data) {
           setDrivers(data);
-          setDriverFilter(data);
+
         }
       } catch (error) {
         console.error("Erro ao buscar motoristas:", error);
