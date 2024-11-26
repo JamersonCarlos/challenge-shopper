@@ -70,7 +70,7 @@ const Trips = () => {
     console.log(data);
 
     fetchTrips(); 
-  }, []); 
+  }); 
   return (
     <div className="trips">
       <div className="trips-container">
@@ -129,7 +129,7 @@ const Trips = () => {
                 <td>{trip.destination}</td>
                 <td>{trip.distance} km</td>
                 <td>{trip.duration} </td>
-                <td>{trip.value} </td>
+                <td>{trip.value.toFixed(2)} </td>
                 {trip.createdAt && <td>{convert(trip.createdAt)}</td>}
               </tr>
             ))}

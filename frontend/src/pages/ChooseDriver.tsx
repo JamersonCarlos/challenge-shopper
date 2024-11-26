@@ -161,7 +161,7 @@ const ChooseDriver: React.FC = () => {
                   <div className="details-container">
                     <p>Distância Total: {dataRouter.data.distance} km</p>
                     <p>Duração: {dataRouter.data.duration}</p>
-                    <p>Valor: R${driver.value}</p>
+                    <p>Valor: R${driver.value.toFixed(2)}</p>
                   </div>
                 </div>
                 {isLoaded && (
