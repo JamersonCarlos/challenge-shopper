@@ -223,7 +223,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
               <div className="preview-results-container">
                 <div className="results">
                   <p>Distância: {result.distance} km</p>
-                  <p>Duration: {result.duration}</p>
+                  <p>Duração: {result.duration}</p>
                 </div>
                 <div className="buttons-container">
                   <button className="btn-back" onClick={clearOriginDestination}>
