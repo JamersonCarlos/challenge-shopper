@@ -67,8 +67,6 @@ const Trips = () => {
       }
     }
 
-    console.log(data);
-
     fetchTrips(); 
   }); 
   return (
