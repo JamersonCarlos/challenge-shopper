@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Trips.css";
 import { useState } from "react";
 
@@ -11,6 +11,7 @@ import { responseSearchTrips } from "../interfaces/trip.interface";
 
 //Services
 import { searchTrips } from "../services/tripService";
+import { listTrips } from "../services/tripService";
 
 //Mascara para o input
 import InputMask from "react-input-mask";
@@ -57,6 +58,19 @@ const Trips = () => {
     const isExistCpf = cpfValue !== ""; // Se o campo cpf não está vazio
     return isExistCpf && isCpfValid && cpfValue.length === 11;
   };
+
+  useEffect(() => { 
+    const fetchTrips = async () => { 
+      const result = await listTrips();
+      if(result){ 
+        setData(result.rides);
+      }
+    }
+
+    console.log(data);
+
+    fetchTrips(); 
+  }, []); 
   return (
     <div className="trips">
       <div className="trips-container">
