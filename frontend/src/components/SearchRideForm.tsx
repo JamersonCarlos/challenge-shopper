@@ -1,9 +1,16 @@
 import React, { useRef } from "react";
 import "./SearchRideForm.css";
 import { useState } from "react";
-import { FaIdCard, FaMapMarkerAlt, FaLocationArrow } from "react-icons/fa";
 import { Autocomplete } from "@react-google-maps/api";
-import { useNavigate } from "react-router-dom";
+
+//Icons
+import {
+  FaIdCard,
+  FaMapMarkerAlt,
+  FaLocationArrow,
+} from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+import { MdOutlinePersonSearch } from "react-icons/md";
 
 //Função de verificação
 import { isErrorInvalidAddress } from "../interfaces/resultRide.interface";
@@ -23,6 +30,7 @@ import InputMask from "react-input-mask";
 
 //Serviço para buscar motorista
 import { searchDriver } from "../services/driverService";
+import { useNavigate } from "react-router-dom";
 interface ChildrenProps {
   onResult: (data: ResultRides) => void;
 }
@@ -43,9 +51,10 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   //Validatores de entrada
-  const [errorCpf, setErrorCpf] = useState<string>("");
-  const [errorOrigin, setErrorOrigin] = useState<string>("");
-  const [errorDestination, setErrorDestination] = useState<string>("");
+  const [errorCpf, setErrorCpf] = useState<string>(""); //CPF invalido
+  const [errorOrigin, setErrorOrigin] = useState<string>(""); //Endereço de origem invalido
+  const [errorDestination, setErrorDestination] = useState<string>(""); //Endereço de destino invalido
+  const [addressEqualError, setAddressEqualError] = useState<string>(""); //Endereços de origem e destino iguais
 
   // Referências para o Autocomplete
   const originRef = useRef<google.maps.places.Autocomplete | null>(null);
@@ -73,19 +82,24 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
     const data = await searchDriver(cpfValue, origin, destination);
     if (isErrorInvalidAddress(data)) {
       if (data.error_description === "Endereço de destino inválido") {
-        setErrorDestination("Endereço de destino inválido");
+        setErrorDestination(data.error_description);
       } else {
         setErrorDestination("");
       }
       if (data.error_description === "Endereço de origem inválido") {
-        setErrorOrigin("Endereço de origem inválido");
+        setErrorOrigin(data.error_description);
       } else {
         setErrorOrigin("");
+      }
+      if (
+        data.error_description ===
+        "Os endereços de origem e destino não podem ser iguais!!!"
+      ) {
+        setAddressEqualError(data.error_description);
       }
     } else {
       setErrorDestination("");
       setErrorOrigin("");
-      console.log(data);
       setResult(data);
       onResult(data);
     }
@@ -133,7 +147,10 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
       {loading && <Loading></Loading>}
       {!loading && (
         <div className="form-container">
-          <h2>Buscar Motorista</h2>
+          <div className="header-form">
+            <h2>Buscar Motorista</h2>
+            <MdOutlinePersonSearch className="icon-search"></MdOutlinePersonSearch>
+          </div>
           <form onSubmit={handleSubmit} className="form-ride">
             <label>
               <span>CPF</span>
@@ -150,7 +167,6 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
               </div>
               {errorCpf && <p className="error-text">{errorCpf}</p>}
             </label>
-
             <label>
               <span>Origem</span>
               <div className="input-container">
@@ -231,12 +247,21 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                 </div>
               </div>
             )}
+            {addressEqualError && (
+              <div className="card-error">
+                <p>Os endereços de origem e destino não podem ser iguais!!!</p>
+                <IoClose
+                  className="btn-close-error"
+                  onClick={() => setAddressEqualError("")}
+                ></IoClose>
+              </div>
+            )}
             {!result && (
               <input
                 type="submit"
                 value="Estimar Rota"
                 disabled={!isFormValid()}
-              />
+              ></input>
             )}
           </form>
         </div>

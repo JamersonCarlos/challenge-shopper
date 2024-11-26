@@ -69,7 +69,7 @@ router.post("/estimate", async (req: Request, res: Response) => {
       originCoordinates = await getLatLng(origin, client);
     } catch (error) {
       return res.status(400).json({
-        error_code: "INVALID ADRESS",
+        error_code: "INVALID_ADRESS",
         error_description: "Endereço de origem inválido",
       });
     }
@@ -78,8 +78,19 @@ router.post("/estimate", async (req: Request, res: Response) => {
       destinationCoordinates = await getLatLng(destination, client);
     } catch (error) {
       return res.status(400).json({
-        error_code: "INVALID ADRESS",
+        error_code: "INVALID_ADRESS",
         error_description: "Endereço de destino inválido",
+      });
+    }
+
+    if (
+      JSON.stringify(originCoordinates) ===
+      JSON.stringify(destinationCoordinates)
+    ) {
+      return res.status(400).json({
+        error_code: "INVALID_ADRESS",
+        error_description:
+          "Os endereços de origem e destino não podem ser iguais!!!",
       });
     }
 
