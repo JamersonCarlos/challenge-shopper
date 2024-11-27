@@ -65,7 +65,10 @@ router.post("/estimate", async (req: Request, res: Response) => {
     if (!isResponseBodyRideEstimate(req.body)) {
       return res
         .status(400)
-        .json({ error_code: "INVALID_DATA", error_description: "" });
+        .json({
+          error_code: "INVALID_DATA",
+          error_description: "request body data is invalid",
+        });
     }
     const { id, origin, destination }: RequestBody = req.body;
 
