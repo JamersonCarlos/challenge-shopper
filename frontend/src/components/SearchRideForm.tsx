@@ -51,6 +51,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
   const [errorOrigin, setErrorOrigin] = useState<string>(""); //Endereço de origem invalido
   const [errorDestination, setErrorDestination] = useState<string>(""); //Endereço de destino invalido
   const [addressEqualError, setAddressEqualError] = useState<string>(""); //Endereços de origem e destino iguais
+  const [errorDistanceSmall, setErrorDistanceSmall] = useState<string>(""); //Distância menor que 1 km
 
   // Referências para o Autocomplete
   const originRef = useRef<google.maps.places.Autocomplete | null>(null);
@@ -77,25 +78,31 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
     setLoading(true);
     const data = await searchDriver(cpfValue, origin, destination);
     if (isErrorInvalidAddress(data)) {
-      if (data.error_description === "Endereço de destino inválido") {
-        setErrorDestination(data.error_description);
-      } else {
-        setErrorDestination("");
-      }
-      if (data.error_description === "Endereço de origem inválido") {
-        setErrorOrigin(data.error_description);
+      if (data.error_code === "INVALID_ADRESS_ORIGIN") {
+        setErrorOrigin("Endereço de origem inválido");
       } else {
         setErrorOrigin("");
       }
-      if (
-        data.error_description ===
-        "Os endereços de origem e destino não podem ser iguais!!!"
-      ) {
-        setAddressEqualError(data.error_description);
+      if (data.error_code === "INVALID_ADRESS_DESTINATION") {
+        setErrorDestination("Endereço de destino inválido");
+      } else {
+        setErrorDestination("");
+      }
+      if (data.error_code === "INVALID_ADRESS_EQUALS") {
+        setAddressEqualError(
+          "Os endereços de origem e destino não podem ser iguais!!!"
+        );
+      } else {
+        setAddressEqualError("");
+      }
+      if (data.error_code === "INVALID_DISTANCE") {
+        setErrorDistanceSmall(
+          "Infelizmente não temos motoristas para atender viagens com distância menor que 1 km"
+        );
+      } else {
+        setErrorDistanceSmall("");
       }
     } else {
-      setErrorDestination("");
-      setErrorOrigin("");
       setResult(data);
       onResult(data);
     }
@@ -245,10 +252,19 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
             )}
             {addressEqualError && (
               <div className="card-error">
-                <p>Os endereços de origem e destino não podem ser iguais!!!</p>
+                <p>{addressEqualError}</p>
                 <IoClose
                   className="btn-close-error"
                   onClick={() => setAddressEqualError("")}
+                ></IoClose>
+              </div>
+            )}
+            {errorDistanceSmall && (
+              <div className="card-error">
+                <p>{errorDistanceSmall}</p>
+                <IoClose
+                  className="btn-close-error"
+                  onClick={() => setErrorDistanceSmall("")}
                 ></IoClose>
               </div>
             )}
