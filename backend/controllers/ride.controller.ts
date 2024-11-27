@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
 import getLatLng from "../utils/getLongitudeAndLatitude";
+import { cpf } from "cpf-cnpj-validator";
 
 //Models
 import { Driver } from "../models/driver.model";
@@ -20,6 +21,7 @@ import {
 } from "@googlemaps/google-maps-services-js";
 import { Op, where } from "sequelize";
 import { Assessment } from "../models/assessment.model";
+import { error } from "console";
 
 //Roteamento
 const express = require("express");
@@ -34,7 +36,7 @@ interface RequestBody {
   destination: string;
 }
 
-function isRequestBodyConfirm(data: any): data is ResponseBodyConfirm {
+function isResponseBodyConfirm(data: any): data is ResponseBodyConfirm {
   return (
     typeof data === "object" &&
     typeof data.origin === "string" &&
@@ -49,10 +51,30 @@ function isRequestBodyConfirm(data: any): data is ResponseBodyConfirm {
   );
 }
 
+function isResponseBodyRideEstimate(data: any): data is RequestBody {
+  return (
+    typeof data === "object" &&
+    typeof data.id === "string" && // Validar o tipo de id como string
+    typeof data.origin === "string" &&
+    typeof data.destination === "string"
+  );
+}
 //"POST /ride/estimate"
 router.post("/estimate", async (req: Request, res: Response) => {
   try {
+    if (!isResponseBodyRideEstimate(req.body)) {
+      return res
+        .status(400)
+        .json({ error_code: "INVALID_DATA", error_description: "" });
+    }
     const { id, origin, destination }: RequestBody = req.body;
+
+    if (!cpf.isValid(id)) {
+      return res
+        .status(400)
+        .json({ error_code: "INVALID_PK", error_description: "INVALID CPF" });
+    }
+
     let originCoordinates: coordinatesInterface = { latitude: 0, longitude: 0 };
     let destinationCoordinates: coordinatesInterface = {
       latitude: 0,
@@ -60,17 +82,18 @@ router.post("/estimate", async (req: Request, res: Response) => {
     };
 
     if (!origin || !destination) {
-      return res
-        .status(400)
-        .json({ error: "Origin and destination are required." });
+      return res.status(400).json({
+        error_code: "INVALID_ADRESS",
+        error_description: "Empty origin and destination address",
+      });
     }
 
     try {
       originCoordinates = await getLatLng(origin, client);
     } catch (error) {
       return res.status(400).json({
-        error_code: "INVALID_ADRESS",
-        error_description: "Endereço de origem inválido",
+        error_code: "INVALID_ADRESS_ORIGIN",
+        error_description: "Invalid source address",
       });
     }
 
@@ -78,8 +101,8 @@ router.post("/estimate", async (req: Request, res: Response) => {
       destinationCoordinates = await getLatLng(destination, client);
     } catch (error) {
       return res.status(400).json({
-        error_code: "INVALID_ADRESS",
-        error_description: "Endereço de destino inválido",
+        error_code: "INVALID_ADRESS_DESTINATION",
+        error_description: "Invalid destination address",
       });
     }
 
@@ -88,9 +111,8 @@ router.post("/estimate", async (req: Request, res: Response) => {
       JSON.stringify(destinationCoordinates)
     ) {
       return res.status(400).json({
-        error_code: "INVALID_ADRESS",
-        error_description:
-          "Os endereços de origem e destino não podem ser iguais!!!",
+        error_code: "INVALID_ADRESS_EQUALS",
+        error_description: "Addresses cannot be the same",
       });
     }
 
@@ -112,6 +134,13 @@ router.post("/estimate", async (req: Request, res: Response) => {
 
     const distance: string = result.distance.text;
     const distanceNumber: number = parseFloat(distance.replace(/[^\d.]/g, ""));
+
+    if (distanceNumber < 1) {
+      return res.status(400).json({
+        error_code: "INVALID_DISTANCE",
+        error_description: "Distance less than 1 km",
+      });
+    }
     const duration: string = result.duration.text;
 
     //Consultando os motoristas que atendem ao requisito de Kilometragem minima
@@ -155,7 +184,9 @@ router.post("/estimate", async (req: Request, res: Response) => {
     };
     res.json(objectResponse);
   } catch (e) {
-    res.status(500).json({});
+    res
+      .status(500)
+      .json({ error_code: "INTERNAL_SERVER_ERROR", error_description: "" });
   }
 });
 
@@ -163,10 +194,10 @@ router.post("/estimate", async (req: Request, res: Response) => {
 router.patch("/confirm", async (req: Request, res: Response) => {
   try {
     //Validando dados de entrada
-    if (!isRequestBodyConfirm(req.body)) {
+    if (!isResponseBodyConfirm(req.body)) {
       return res.status(400).json({
         error_code: "INVALID_DATA",
-        error_description: "Os dados fornecidos não são válidos",
+        error_description: "The data provided is not valid!",
       });
     }
     const data: ResponseBodyConfirm = req.body;
@@ -181,7 +212,7 @@ router.patch("/confirm", async (req: Request, res: Response) => {
     if (!drivers) {
       return res.status(400).json({
         error_code: "DRIVER_NOT_FOUND",
-        error_description: "Motorista não encontrado!",
+        error_description: "Driver not found!",
       });
     }
 
@@ -190,8 +221,7 @@ router.patch("/confirm", async (req: Request, res: Response) => {
     if (data.distance < driverResult.minKm) {
       return res.status(400).json({
         error_code: "INVALID_DISTANCE",
-        error_description:
-          "Distância menor que a quilometragem minima do condutor",
+        error_description: "Distance less than the driver's minimum mileage!",
       });
     }
 
@@ -228,7 +258,9 @@ router.get("/:customer_id", async (req: Request, res: Response) => {
         },
       });
       if (!result) {
-        return res.status(400).json({ error_code: "INVALID_DRIVER" });
+        return res
+          .status(400)
+          .json({ error_code: "INVALID_DRIVER", error_description: "" });
       }
     }
 
