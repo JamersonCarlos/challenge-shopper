@@ -1,12 +1,5 @@
-const shell = require("shelljs");
 const fs = require("fs");
 const path = require("path");
-
-// Copia o .env da raiz para o diretório do frontend
-if (shell.cp("../.env", ".env").code !== 0) {
-  console.error("Erro ao copiar o arquivo .env");
-  process.exit(1);
-}
 
 // Caminhos para o arquivo .env
 const sourcePath = path.resolve(__dirname, "../.env");
