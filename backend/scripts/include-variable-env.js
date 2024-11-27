@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 // Caminhos para os arquivos .env
-const parentEnvPath = path.resolve(__dirname, "../../.env");
-const backendEnvPath = path.resolve(__dirname, "../.env");
+const parentEnvPath = path.resolve(__dirname, "../.env");
+const backendEnvPath = path.resolve(__dirname, ".env");
 
 // Nome da variável a ser copiada
 const targetVariable = "GOOGLE_API_KEY";
