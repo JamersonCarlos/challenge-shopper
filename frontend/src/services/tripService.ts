@@ -2,7 +2,9 @@ import axios, { AxiosError } from "axios";
 import { responseSearchTrips, Trip } from "../interfaces/trip.interface";
 import { searchTripsInterface } from "../interfaces/searchTrip.interface";
 
-const url = process.env.REACT_APP_API_URL;
+const url = process.env.REACT_APP_API_URL
+  ? process.env.REACT_APP_API_URL
+  : "http://localhost:8080/";
 
 export const confirmTrip = async (trip: Trip) => {
   try {
@@ -44,14 +46,14 @@ export const searchTrips = async (search: searchTripsInterface) => {
   }
 };
 
-export const listTrips = async ():Promise<responseSearchTrips | undefined> => {
+export const listTrips = async (): Promise<responseSearchTrips | undefined> => {
   try {
     const response = await axios.get(`${url}trips`, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.log(error);
   }

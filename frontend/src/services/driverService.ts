@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { ErrorInvalidAddress } from "../interfaces/resultRide.interface";
 import { Driver } from "../interfaces/driver.interface";
 
-const url = process.env.REACT_APP_API_URL;
+const url = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : "http://localhost:8080/";
 
 export const searchDriver = async (
   id: string,
@@ -41,6 +41,7 @@ export const searchDriver = async (
 
 export const listDrivers = async (): Promise<Driver[] | undefined> => {
   try {
+    console.log(url); 
     const response = await axios.get<Driver[]>(`${url}drivers`, {
       headers: { 
         "Content-Type": "application/json",
