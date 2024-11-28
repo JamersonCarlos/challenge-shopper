@@ -1,0 +1,252 @@
+.cabecalho {
+  padding: 20px 40px;
+  border-bottom: 1px double #ff9900;
+}
+
+.cabecalho h1 {
+  color: #ff9900;
+  font-size: 20px;
+}
+
+.container-main {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  margin-bottom: 10px;
+}
+
+.trip-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
+}
+
+.viagem-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 40px 0px 20px 0px;
+  font-family: "Poppins", sans-serif;
+  background-color: #ffffff;
+}
+
+.driver-container,
+.vehicle-container,
+.review-container {
+  width: 20%;
+  min-width: 200px;
+  height: 450px;
+  padding: 15px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.vehicle-container,
+.review-container {
+  margin-left: 20px;
+  width: 100%;
+}
+
+.review-container {
+  justify-content: start;
+  overflow-y: scroll;
+  scrollbar-color: #ff9900 #ffffff;
+}
+
+.review-container::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+img {
+  width: 100%;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  object-fit: cover;
+  max-height: 300px;
+}
+
+.viagem-container p {
+  padding-bottom: 10px;
+  font-size: 14px;
+  color: #3e4958;
+  text-align: justify;
+}
+
+.viagem-container h2 {
+  text-align: left;
+  padding-bottom: 10px;
+  font-size: 18px;
+}
+
+.btn-visit-profile {
+  width: 100%;
+  font-size: 15px;
+  background-color: transparent;
+  border: 1px solid #ff9900;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.informations-container {
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 55%;
+  height: 450px;
+  border-radius: 10px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.informations-column {
+  padding: 10px 10px 0px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.details-container {
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.details-container > p {
+  flex: auto;
+}
+
+.informations-column h3 {
+  color: #ff9900;
+  font-weight: normal;
+  padding-bottom: 10px;
+}
+
+.informations-column p {
+  border: 1px solid #ff9900;
+  color: #636363;
+  height: 30px;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-back,
+.btn-confirm {
+  border-radius: 10px;
+  border: none;
+  padding: 10px 30px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-back {
+  background-color: #3e4958;
+}
+.btn-confirm {
+  background-color: #ff9900;
+}
+
+.btn-scroll {
+  color: #ff9900;
+  font-size: 50px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.informations {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.disable {
+  color: #ff990048;
+  cursor: auto;
+}
+
+.vehicle-reviews-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 450px;
+  width: 20%;
+  gap: 10px;
+}
+
+.title-reviews {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-reviews .star-icon {
+  margin-left: 10px;
+  color: #ff9900;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%); /* Começa fora da tela à direita */
+    opacity: 0; /* Começa invisível */
+  }
+  100% {
+    transform: translateX(0); /* Chega no estado final, centralizado */
+    opacity: 1; /* Torna-se visível */
+  }
+}
+
+.confirmation-card {
+  position: fixed;
+  top: 10px;
+  right: 40px;
+  border: 1px solid #0d6110;
+  color: #3e4958;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  text-align: justify;
+  width: 300px;
+
+  /*Animação*/
+  animation: slideInFromRight 0.5s ease-out forwards;
+}
+
+.confirmation-card h2 {
+  margin-bottom: 10px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-alert {
+  margin-left: 10px;
+}
+
+.confirmation-card p {
+  font-size: 12px;
+}
+
+.btn-confirm-driver {
+  margin-right: 30px;
+  font-size: 14px;
+}

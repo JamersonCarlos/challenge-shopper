@@ -1,0 +1,157 @@
+.header-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-form > .icon-search {
+  color: #ff9900;
+  font-size: 30px;
+  margin-left: 10px;
+}
+
+.search-ride-form {
+  padding: 20px;
+  background-color: #151515;
+  border-radius: 48px 0px 0px 50px;
+  width: 50%;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  width: 100%;
+}
+
+.form-ride {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  font-family: "Manrope", sans-serif;
+}
+
+.form-ride label {
+  width: 100%;
+}
+
+form input {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0px 20px 0px;
+  border: none;
+  border-radius: 4px;
+  height: 35px;
+  padding-left: 10px;
+}
+
+.form-ride span {
+  color: white;
+  font-size: 16px;
+}
+
+.form-ride input[type="submit"] {
+  width: 100%;
+  max-width: 200px;
+  height: 35px;
+  color: white;
+  font-weight: bold;
+  background-color: #ff9900;
+  margin-top: 15px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.form-ride input[type="submit"]:disabled {
+  background-color: #ff99005b;
+  cursor: not-allowed;
+}
+
+.form-ride input:focus {
+  outline: none;
+}
+
+.form-ride input::placeholder {
+  font-size: 14px;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.input-container input {
+  width: 100%;
+  font-size: 16px;
+}
+
+.input-container .icon-right {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #b0b0b0;
+  pointer-events: none;
+}
+
+h2 {
+  color: #ff9900;
+  text-align: center;
+}
+
+.preview-results-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+}
+
+.btn-back,
+.btn-confirm {
+  padding: 7px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.results {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.results p {
+  color: aliceblue;
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+
+.card-error {
+  background-color: #ee3f4d;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.btn-close-error {
+  font-size: 20px;
+  cursor: pointer;
+}
