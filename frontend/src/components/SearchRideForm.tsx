@@ -112,6 +112,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
         setErrorNotExistRoute("");
       }
     } else {
+      setErrorNotExistRoute("");
       setErrorCpf("");
       setErrorDestination("");
       setAddressEqualError("");
