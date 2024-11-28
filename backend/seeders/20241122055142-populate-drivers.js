@@ -7,7 +7,7 @@ module.exports = {
       `SELECT * FROM drivers;`
     );
     if (driversData.length === 0) {
-      await queryInterface.bulkInsert("Drivers", [
+      await queryInterface.bulkInsert("drivers", [
         {
           name: "Homer Simpson",
           description:
