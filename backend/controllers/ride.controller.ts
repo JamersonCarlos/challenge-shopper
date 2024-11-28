@@ -132,7 +132,7 @@ router.post("/estimate", async (req: Request, res: Response) => {
     if (result.status !== "OK") {
       return res
         .status(400)
-        .json({ error: "Unable to calculate distance and duration." });
+        .json({ error_code: "INVALID_ROUTE", error_description: "It is not possible to trace a route to this address" });
     }
 
     const distance: string = result.distance.text;
