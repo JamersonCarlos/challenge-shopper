@@ -75,7 +75,7 @@ const ChooseDriver: React.FC = () => {
     const response = await confirmTrip(newTrip);
     if (response.success) {
       setShowConfirmation(true);
-      setTimeout(() => navigate("/"), 3000);
+      setTimeout(() => navigate("/motoristas"), 3000);
     }
   };
 

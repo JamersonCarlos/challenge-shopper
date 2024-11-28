@@ -52,6 +52,7 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
   const [errorDestination, setErrorDestination] = useState<string>(""); //Endereço de destino invalido
   const [addressEqualError, setAddressEqualError] = useState<string>(""); //Endereços de origem e destino iguais
   const [errorDistanceSmall, setErrorDistanceSmall] = useState<string>(""); //Distância menor que 1 km
+  const [errorNotExistRoute, setErrorNotExistRoute] = useState<string>(""); //Não é possível traçar uma rota
 
   // Referências para o Autocomplete
   const originRef = useRef<google.maps.places.Autocomplete | null>(null);
@@ -102,7 +103,19 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
       } else {
         setErrorDistanceSmall("");
       }
+
+      if (data.error_code === "INVALID_ROUTE") {
+        setErrorNotExistRoute(
+          "Não é possível calcular a rota para os endereços informados!!"
+        );
+      } else {
+        setErrorNotExistRoute("");
+      }
     } else {
+      setErrorCpf("");
+      setErrorDestination("");
+      setAddressEqualError("");
+      setErrorOrigin("");
       setResult(data);
       onResult(data);
     }
@@ -265,6 +278,15 @@ const SearchRideForm: React.FC<ChildrenProps> = ({ onResult }) => {
                 <IoClose
                   className="btn-close-error"
                   onClick={() => setErrorDistanceSmall("")}
+                ></IoClose>
+              </div>
+            )}
+            {errorNotExistRoute && (
+              <div className="card-error">
+                <p>{errorNotExistRoute}</p>
+                <IoClose
+                  className="btn-close-error"
+                  onClick={() => setErrorNotExistRoute("")}
                 ></IoClose>
               </div>
             )}
