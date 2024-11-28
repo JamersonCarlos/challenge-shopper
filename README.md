@@ -39,8 +39,7 @@ GOOGLE_API_KEY=(Sua chave da API Google)
 ```
 ### 4. Execute as migrations e seeds
 ```bash 
-npm run db:migrate
-npm run db:seed
+npm run setup
 ```
 
 ### 5. Inicie o servidor 
